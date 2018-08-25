@@ -22,7 +22,6 @@ const getFileFromRequest = (req,cb)=>{
     if (!file) return cb(null,null);
     return cb(null,file);
   });
-
 };
 
 module.exports = function(Event) {

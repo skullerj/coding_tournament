@@ -16,7 +16,12 @@ import withRoot from './withRoot.jsx';
 //Custom components
 import Map from './components/Map';
 import Filters from './components/Filters';
+import Form from './components/Form';
+import List from './components/List';
+import Event from './components/Event';
 
+//Test data
+import {events} from "./components/__tests__/fixtures.json";
 
 const styles = theme => ({
   ...sharedStyles(theme),
@@ -73,13 +78,13 @@ class App extends Component {
             }}
           >
             <div className={classes.drawerContent}>
-              <Route exact path="/" component={()=>(<h1>List</h1>)}></Route>
-              <Route exact path="/send" component={()=>(<h1>Enviar</h1>)}></Route>
-              <Route path="/event/:id" render={({match})=>(<h1>Evento: {match.params.id}</h1>)}></Route>
+              <Route exact path="/" component={()=>(<List events={events}></List>)}></Route>
+              <Route exact path="/send" component={()=>(<Form></Form>)}></Route>
+              <Route path="/event/:id" render={({match})=>(<Event></Event>)}></Route>
             </div>
           </Drawer>
           <div className={classes.content}>
-            <Map></Map>
+            <Map events={events}></Map>
             <Filters></Filters>
           </div>
         </main>
