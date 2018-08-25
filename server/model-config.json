@@ -19,6 +19,6 @@
   },
   "eventType": {
     "dataSource": "mongo",
-    "public": false
+    "public": true
   }
 }
