@@ -124,20 +124,18 @@ class App extends Component {
   }
 
   handleFormSubmit(data,history){
-    let newEvent = {
-      ...data,
-      location:this.state.mapLocation
-    }
-    axios.post('/api/events',newEvent)
-      .then((response)=>{
-        this.setState((oldState)=>{
-          events:[...oldState.events,response.data]
-        });
-        history.push('/');
-        console.log('Se ha agregado el evento');
-      }).catch(()=>{
-        console.log('No se agregó el evento')
-      });
+
+    axios({
+      method: 'post',
+      url: '/api/events',
+      data: bodyFormData,
+      config: { headers: {'Content-Type': 'multipart/form-data' }}
+    }).then((response)=>{
+      history.push('/');
+      console.log('Se ha agregado el evento');
+    }).catch(()=>{
+      console.log('No se agregó el evento')
+    });
 
   }
 
