@@ -40,7 +40,6 @@ class List extends Component {
             </CardActions>
           </Card>
         ))}
-
       </div>
     )
   }

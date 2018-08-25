@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route , Link } from 'react-router-dom';
+import axios from 'axios';
 
 //material components to build the UI
 import Drawer from '@material-ui/core/Drawer';
@@ -7,6 +8,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import LocationOn from '@material-ui/icons/LocationOn';
 
 //Styles
 import { withStyles } from '@material-ui/core/styles';
@@ -49,12 +51,30 @@ const styles = theme => ({
     marginRight:theme.spacing.unit*45,
     marginTop:theme.spacing.unit * 8,
     flexDirection:'column',
-    display:'flex'
+    display:'flex',
+    position:'relative'
+  },
+  overlay:{
+    position:'absolute',
+    top:'50%',
+    left: '50%',
+    zIndex: 100
+  },
+  marker:{
+    fontSize:64,
+    marginTop:'-42px',
+    marginLeft:'-42px',
   }
 });
 
 
 class App extends Component {
+
+  constructor(props){
+    super(props);
+    this.handleFormSubmit=this.handleFormSubmit.bind(this);
+  }
+
   render() {
     const {classes} = this.props;
     return (
@@ -79,11 +99,13 @@ class App extends Component {
           >
             <div className={classes.drawerContent}>
               <Route exact path="/" component={()=>(<List events={events}></List>)}></Route>
-              <Route exact path="/send" component={()=>(<Form></Form>)}></Route>
+              <Route exact path="/send" component={()=>(<Form onSubmit={this.handleFormSubmit}> </Form>)}></Route>
               <Route path="/event/:id" render={({match})=>(<Event></Event>)}></Route>
             </div>
           </Drawer>
           <div className={classes.content}>
+            <Route path="/send" component={()=>(<div className={classes.overlay}><LocationOn className={classes.marker} color="secondary"></LocationOn></div>)}>
+            </Route>
             <Map events={events}></Map>
             <Filters></Filters>
           </div>
@@ -91,6 +113,12 @@ class App extends Component {
       </Router>
     );
   }
+
+  handleFormSubmit(data){
+    axios.post('/api/events/send')
+  }
+
+
 }
 
 export default withRoot(withStyles(styles)(App));
