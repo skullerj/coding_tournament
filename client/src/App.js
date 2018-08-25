@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route , Link } from 'react-router-dom';
-import { withStyles } from '@material-ui/core/styles';
+
+//material components to build the UI
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import Button from '@material-ui/core/Button';
-import withRoot from './withRoot.jsx';
+
+//Styles
+import { withStyles } from '@material-ui/core/styles';
 import sharedStyles from './styles/sharedStyles.js';
+import withRoot from './withRoot.jsx';
+
+//Custom components
+import Map from './components/Map';
+import Filters from './components/Filters';
+
 
 const styles = theme => ({
   ...sharedStyles(theme),
   root: {
     flexGrow: 1,
-    height: 440,
+    height: '100vh',
     zIndex: 1,
-    overflow: 'hidden',
     position: 'relative',
     display: 'flex',
   },
@@ -27,11 +33,18 @@ const styles = theme => ({
   drawerPaper: {
     width: theme.spacing.unit*45
   },
-  content: {
-    marginTop:theme.spacing.unit * 4,
+  drawerContent: {
+    marginTop:theme.spacing.unit * 8,
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing.unit * 3,
+  },
+  content:{
+    width:'100%',
+    marginRight:theme.spacing.unit*45,
+    marginTop:theme.spacing.unit * 8,
+    flexDirection:'column',
+    display:'flex'
   }
 });
 
@@ -59,13 +72,16 @@ class App extends Component {
               paper: classes.drawerPaper,
             }}
           >
-            <div className={classes.content}>
+            <div className={classes.drawerContent}>
               <Route exact path="/" component={()=>(<h1>List</h1>)}></Route>
               <Route exact path="/send" component={()=>(<h1>Enviar</h1>)}></Route>
               <Route path="/event/:id" render={({match})=>(<h1>Evento: {match.params.id}</h1>)}></Route>
             </div>
-
           </Drawer>
+          <div className={classes.content}>
+            <Map></Map>
+            <Filters></Filters>
+          </div>
         </main>
       </Router>
     );

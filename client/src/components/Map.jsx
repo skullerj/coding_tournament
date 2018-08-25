@@ -2,21 +2,35 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import loadGoogleMapsAPI from 'load-google-maps-api';
 
-const mapStyles = {
-  height: '450px',
-  width: '100%'
+//Styles
+import { withStyles } from '@material-ui/core/styles';
+import sharedStyles from '../styles/sharedStyles.js';
+
+const styles = (theme)=> {
+  return {
+    mapContainer:{
+      display:'flex',
+      flexDirection:'column',
+      flexGrow:'1'
+    },
+    map:{
+      display:'flex',
+      width:'100%',
+      flexGrow:'1'
+    }
+  }
 }
 
 const mapOptions = {
   center: {
-    lat: 41.4054682,
-    lng: 2.12373473
+    lat: -0.225219,
+    lng: -78.5248
   },
   zoom: 16
 };
 
 const apiConfig = {
-  key:'AIzaSyDE2XTOO3mc5CnZSdfeesVG0xVfs8L9DidM__0'
+  key:'AIzaSyC3zMqvD8RoNadbq25lxlfjHEzDWaZb5nE'
 };
 
 class Map extends Component {
@@ -29,12 +43,22 @@ class Map extends Component {
     });
   }
 
-  render(){
-    return (<div ref="map" style={mapStyles}>
+  constructor(props){
+    super(props);
+    this.state={
 
-    </div>)
+    }
+  }
+
+  render(){
+    const {classes} = this.props;
+    return (
+      <div className={classes.mapContainer}>
+        <div ref="map" className={classes.map}></div>
+      </div>
+    )
   }
 
 }
 
-export default Map;
+export default withStyles(styles)(Map);
