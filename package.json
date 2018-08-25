@@ -25,6 +25,7 @@
     "strong-error-handler": "^3.0.0"
   },
   "devDependencies": {
+    "concurrently": "^4.0.0",
     "eslint": "^3.17.1",
     "eslint-config-loopback": "^8.0.0"
   },
@@ -33,7 +34,9 @@
     "url": ""
   },
   "nodemonConfig": {
-    "ignore": ["client/*"]
+    "ignore": [
+      "client/*"
+    ]
   },
   "license": "UNLICENSED",
   "description": "deliktum"
