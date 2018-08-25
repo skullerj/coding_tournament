@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 //Styles
 import { withStyles } from '@material-ui/core/styles';
 import sharedStyles from '../styles/sharedStyles.js';
+import Typography from '@material-ui/core/Typography';
 
 const styles = (theme)=> {
   return {
@@ -19,7 +20,7 @@ class Filters extends Component {
     const {classes} = this.props;
     return (
       <div className={classes.bar}>
-        <h1>Hola mundo</h1>
+        <Typography variant="headline" color="text-secondary">Filtros (por implementar) </Typography>
       </div>
     )
   }

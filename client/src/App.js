@@ -124,25 +124,20 @@ class App extends Component {
   }
 
   handleFormSubmit(data,history){
-    var bodyFormData = new FormData();
-    Object.keys(data).forEach((key)=>{
-      if(key==='image'){
-        bodyFormData.append('file',data[key]);
-      }else{
-        bodyFormData.set(key, data[key]);
-      }
-    })
-    axios({
-      method: 'post',
-      url: '/api/events/send',
-      data: bodyFormData,
-      config: { headers: {'Content-Type': 'multipart/form-data' }}
-    }).then((response)=>{
-      history.push('/');
-      console.log('Se ha agregado el evento');
-    }).catch(()=>{
-      console.log('No se agregó el evento')
-    });
+    let newEvent = {
+      ...data,
+      location:this.state.mapLocation
+    }
+    axios.post('/api/events',newEvent)
+      .then((response)=>{
+        this.setState((oldState)=>{
+          events:[...oldState.events,response.data]
+        });
+        history.push('/');
+        console.log('Se ha agregado el evento');
+      }).catch(()=>{
+        console.log('No se agregó el evento')
+      });
 
   }
 

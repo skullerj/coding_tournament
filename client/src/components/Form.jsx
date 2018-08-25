@@ -30,13 +30,11 @@ class Form extends Component {
 
   constructor(props){
     super(props);
-    this.handleReadImportedFile=this.handleReadImportedFile.bind(this);
     this.handleChange=this.handleChange.bind(this)
     this.state={
       description:'',
       type:'',
-      date:new Date(),
-      image:null
+      date:new Date()
     };
   }
 
@@ -79,22 +77,6 @@ class Form extends Component {
           }}
           className={classes.inputField}
         />
-        <input
-          id="file"
-          type="file"
-          onChange={this.handleReadImportedFile}
-          style={{
-            width: 0,
-            height: 0,
-            opacity: 0,
-            overflow: 'hidden',
-            position: 'absolute',
-            zIndex: 1,
-          }}
-        />
-        <Button component="label" htmlFor="file">
-          Subir una imagen
-        </Button>
         <Button variant="contained" color="primary" onClick={()=>{this.props.onSubmit(this.state)}}>Enviar</Button>
       </div>
     )
@@ -105,10 +87,6 @@ class Form extends Component {
     this.setState({[name]:val});
   }
 
-  handleReadImportedFile(event){
-    const file = event.target.files[0];
-    this.setState({imageFile:file});
-  }
 
 }
 
