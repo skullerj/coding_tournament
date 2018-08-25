@@ -1,0 +1,39 @@
+{
+  "name": "event",
+  "plural": "events",
+  "base": "PersistedModel",
+  "idInjection": true,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "description": {
+      "type": "string",
+      "required": true
+    },
+    "location": {
+      "type": "geopoint",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "imageUrl": {
+      "type": "string"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "type": {
+      "type": "hasOne",
+      "model": "eventType",
+      "foreignKey": "name",
+      "options": {
+        "disableInclude": true
+      }
+    }
+  },
+  "acls": [],
+  "methods": {}
+}
