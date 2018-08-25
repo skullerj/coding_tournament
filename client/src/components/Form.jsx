@@ -36,10 +36,7 @@ class Form extends Component {
       description:'',
       type:'',
       date:new Date(),
-      location:{
-        lat:null,
-        lon:null
-      }
+      image:null
     };
   }
 
@@ -108,9 +105,9 @@ class Form extends Component {
     this.setState({[name]:val});
   }
 
-  handleReadImportedFile(e){
-    console.log(e);
-
+  handleReadImportedFile(event){
+    const file = event.target.files[0];
+    this.setState({imageFile:file});
   }
 
 }

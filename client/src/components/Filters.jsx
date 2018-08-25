@@ -21,7 +21,6 @@ class Filters extends Component {
       <div className={classes.bar}>
         <h1>Hola mundo</h1>
       </div>
-
     )
   }
 

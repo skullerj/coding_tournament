@@ -73,10 +73,19 @@ class App extends Component {
   constructor(props){
     super(props);
     this.handleFormSubmit=this.handleFormSubmit.bind(this);
+    this.handleLocationChange=this.handleLocationChange.bind(this);
+    this.state={
+      mapLocation:{
+        lat:null,
+        lng:null
+      },
+      events:[]
+    }
   }
 
   render() {
     const {classes} = this.props;
+    const {events} = this.state;
     return (
       <Router>
         <main className={classes.root}>
@@ -99,14 +108,14 @@ class App extends Component {
           >
             <div className={classes.drawerContent}>
               <Route exact path="/" component={()=>(<List events={events}></List>)}></Route>
-              <Route exact path="/send" component={()=>(<Form onSubmit={this.handleFormSubmit}> </Form>)}></Route>
+              <Route exact path="/send" component={({history})=>(<Form onSubmit={(data)=>{this.handleFormSubmit(data,history) }}> </Form>)}></Route>
               <Route path="/event/:id" render={({match})=>(<Event></Event>)}></Route>
             </div>
           </Drawer>
           <div className={classes.content}>
             <Route path="/send" component={()=>(<div className={classes.overlay}><LocationOn className={classes.marker} color="secondary"></LocationOn></div>)}>
             </Route>
-            <Map events={events}></Map>
+            <Map events={events} onLocationChange={this.handleLocationChange}></Map>
             <Filters></Filters>
           </div>
         </main>
@@ -114,8 +123,48 @@ class App extends Component {
     );
   }
 
-  handleFormSubmit(data){
-    axios.post('/api/events/send')
+  handleFormSubmit(data,history){
+    var bodyFormData = new FormData();
+    Object.keys(data).forEach((key)=>{
+      if(key==='image'){
+        bodyFormData.append('file',data[key]);
+      }else{
+        bodyFormData.set(key, data[key]);
+      }
+    })
+    axios({
+      method: 'post',
+      url: '/api/events/send',
+      data: bodyFormData,
+      config: { headers: {'Content-Type': 'multipart/form-data' }}
+    }).then((response)=>{
+      history.push('/');
+      console.log('Se ha agregado el evento');
+    }).catch(()=>{
+      console.log('No se agregó el evento')
+    });
+
+  }
+
+  componentDidMount(){
+    this.getEvents();
+  }
+
+  handleLocationChange(location){
+    this.setState({
+      mapLocation:location
+    });
+  }
+
+  getEvents(){
+    axios.get('/api/events')
+      .then((response)=>{
+        console.log(response);
+        this.setState({events:response.data});
+      })
+      .catch(()=>{
+        console.error('Hubo un error obteniendo los eventos');
+      })
   }
 
 

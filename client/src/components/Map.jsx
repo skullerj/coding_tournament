@@ -63,7 +63,8 @@ class Map extends Component {
     return events.map((event)=>{
       let marker = new this.mapSDK.Marker({
           position: event.location,
-          label: event.id
+          label: event.id[0],
+          map:this.map
       });
       marker.addListener('click',()=>{
         this.onMarkerClick(event.id);
@@ -77,22 +78,29 @@ class Map extends Component {
       this.markerClusterSKD = window.MarkerClusterer;
       this.mapSDK = window.google.maps;
       this.map = new this.mapSDK.Map( this.refs.map, mapOptions );
+      this.mapSDK.event.addListener(this.map,'dragend',()=>{
+        this.handleLocationChange(this.map.getCenter());
+      });
+      this.handleLocationChange(this.map.getCenter());
       this.setUpMapMarkers(this.props.events);
     }
   }
 
   setUpMapMarkers(events){
-    console.log(events);
     if(!this.map)return;
     if(events.length===0)return;
+    this.map.addMark
     if(this.markerCluster){
       this.markerCluster.clearMarkers();
       this.markerCluster.addMarkers(this.createMarkers(events));
     }else{
       this.markerCluster = new this.markerClusterSKD(this.map, this.createMarkers(events),
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      console.log(this.markerCluster);
     }
+  }
+
+  handleLocationChange(center){
+    this.props.onLocationChange({lat:center.lat(),lng:center.lng()});
   }
 
   componentDidUpdate(props,state,snapshot){
